@@ -1,0 +1,8 @@
+{
+  "model_name": "MoodTunes CNN",
+  "version": "1.0.0",
+  "architecture": "Sequential Conv2D-BatchNormalization-Dropout",
+  "input_shape": [48, 48, 1],
+  "dataset": "FER2013",
+  "classes": 7
+}
