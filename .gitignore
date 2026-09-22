@@ -25,6 +25,7 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
+*.pyc
 
 # Python tooling / test caches
 .pytest_cache/
