@@ -1,19 +1,19 @@
-from fastapi import APIRouter, UploadFile, File, Request, HTTPException
+from fastapi import APIRouter, UploadFile, File, Form, Request, HTTPException
 from fastapi.concurrency import run_in_threadpool
 from app.schemas.analyze import AnalyzeResponse, ErrorResponse
 from app.core.exceptions import InvalidImageException, ModelNotReadyException
 from app.services.mood_service import MoodService
 from app.services.recommendation_service import RecommendationService
-from app.providers.music.jamendo import JamendoMusicProvider
+from app.services.groq_music_service import GroqMusicService
 from app.providers.music.itunes import ITunesMusicProvider
-from app.core.config import settings
 
 router = APIRouter()
 
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
+groq_service = GroqMusicService()
 
 @router.post("/analyze", response_model=AnalyzeResponse, responses={400: {"model": ErrorResponse}, 422: {"model": ErrorResponse}, 503: {"model": ErrorResponse}})
-async def analyze_expression(request: Request, image: UploadFile = File(...)):
+async def analyze_expression(request: Request, image: UploadFile = File(...), intent: str = Form("match_me")):
     # 1. Validate payload
     if not image or not image.filename:
         raise InvalidImageException("No image file provided in field 'image'.")
@@ -49,19 +49,26 @@ async def analyze_expression(request: Request, image: UploadFile = File(...)):
         probabilities=emotion_result.probabilities.model_dump()
     )
 
-    # 7. Music Provider & Recommendation Engine
-    if settings.MUSIC_PROVIDER == "jamendo":
-        music_provider = JamendoMusicProvider(client_id=settings.JAMENDO_CLIENT_ID)
-    else:
-        music_provider = ITunesMusicProvider()
+    # 7. Groq Music Intelligence Layer
+    direction, groq_status = await groq_service.generate_music_direction(emotional_profile, intent)
+
+    # 8. Music Provider & Recommendation Engine
+    music_provider = ITunesMusicProvider()
         
     rec_service = RecommendationService(music_provider=music_provider)
-    recommendations = await rec_service.get_recommendations(profile=emotional_profile)
+    recommendations = await rec_service.get_recommendations(profile=emotional_profile, direction=direction)
 
-    # 8. Return Pydantic Response matching API contract
+    # 9. Return Pydantic Response matching API contract
     return AnalyzeResponse(
         success=True,
         emotion=emotion_result,
         emotional_profile=emotional_profile,
+        user_intent=intent,
+        music_direction=direction,
+        provider_status={
+            "itunes": "ok",
+            "jamendo": "disabled",
+            "groq": groq_status
+        },
         recommendations=recommendations
     )

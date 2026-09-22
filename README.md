@@ -38,10 +38,22 @@ npm run dev
 
 ---
 
+## Environment Configuration
+
+Copy `backend/.env.example` to `backend/.env` and update configuration values as needed:
+
+```powershell
+cp backend/.env.example backend/.env
+```
+
+Refer to [`.env.example`](file:///c:/nndl/backend/.env.example) for all supported configuration options and default key templates.
+
+---
+
 ## Development Modes
 
 ### Mock Mode (Default for Testing Before Model Training)
-In `backend/.env`:
+Set `EMOTION_PROVIDER=mock` in your `backend/.env` (derived from `backend/.env.example`):
 ```ini
 EMOTION_PROVIDER=mock
 ```
@@ -50,7 +62,7 @@ Allows testing the full pipeline and frontend integration before training the cu
 ### Real Model Inference Mode
 1. Train the model using `ml/notebooks/MoodTunes_FER2013_Emotion_Training.ipynb`.
 2. Copy `moodtunes_emotion_cnn.keras` into `backend/app/models/emotion/`.
-3. In `backend/.env`:
+3. Set `EMOTION_PROVIDER=moodtunes_cnn` in `backend/.env`:
 ```ini
 EMOTION_PROVIDER=moodtunes_cnn
 ```

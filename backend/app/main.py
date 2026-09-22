@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 
 from app.core.config import settings
 from app.core.exceptions import MoodTunesException
-from app.api import health, analyze, music
+from app.api import health, analyze, music, talk, content
 from app.vision.face_detector import FaceDetector
 from app.providers.emotion.mock import MockEmotionProvider
 from app.providers.emotion.moodtunes_cnn import MoodTunesCNNProvider
@@ -61,8 +61,11 @@ async def moodtunes_exception_handler(request: Request, exc: MoodTunesException)
     )
 
 app.include_router(health.router)
+app.include_router(health.router, prefix="/api")
 app.include_router(analyze.router, prefix="/api")
 app.include_router(music.router, prefix="/api")
+app.include_router(talk.router, prefix="/api")
+app.include_router(content.router, prefix="/api")
 
 if __name__ == "__main__":
     import uvicorn

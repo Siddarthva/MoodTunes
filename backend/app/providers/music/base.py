@@ -4,8 +4,8 @@ from app.schemas.analyze import Track
 
 class BaseMusicProvider(ABC):
     @abstractmethod
-    async def fetch_candidates(self, mood: Any, query: str = None) -> List[Track]:
+    async def fetch_candidates(self, mood: Any, direction: Any = None, query: str = None) -> List[Track]:
         """
-        Fetches candidate tracks for a given mood profile or query.
+        Fetches candidate tracks for a given mood profile and music direction.
         """
         pass

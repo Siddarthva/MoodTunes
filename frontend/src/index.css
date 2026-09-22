@@ -1,43 +1,130 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --color-base: #080808;
+  --color-surface: #111111;
+  --color-surface-alt: #171717;
+  --color-primary-text: #F2F2F2;
+  --color-secondary-text: #A6A6A6;
+  --color-muted-text: #666666;
+  --color-line: #2A2A2A;
+  --color-accent-light: #D8D8D8;
+  --color-accent-dark: #242424;
+
+  --font-sans: 'Inter', 'Helvetica Neue', sans-serif;
+  --font-display: 'Inter Tight', 'Helvetica Neue', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --animate-typewriter: typewriter 1s steps(30, end);
+  --animate-blur-reveal: blurReveal 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  --animate-fade-in-slow: fadeIn 2s ease-in-out forwards;
+}
 
 :root {
   color-scheme: dark;
-  background-color: #050505;
-  color: #f2f2f2;
-  font-family: 'Inter Tight', 'Helvetica Neue', sans-serif;
+  background-color: var(--color-base);
+  color: var(--color-primary-text);
+
+  /* Dynamic Emotion Engine Theme Defaults */
+  --mood-primary: rgb(119, 119, 119);
+  --mood-secondary: rgb(51, 51, 51);
+  --mood-accent: rgb(181, 181, 181);
+  --mood-background: #080808;
+  --mood-gradient: radial-gradient(circle at 50% -10%, rgba(119, 119, 119, 0.12), rgba(8, 8, 8, 0.98) 70%);
+  --mood-glow: rgba(119, 119, 119, 0.15);
+  --mood-text-accent: #B5B5B5;
+  --mood-animation-speed: 1s;
+  --mood-intensity: 0.25;
 }
 
 body {
   margin: 0;
-  background-color: #050505;
-  color: #f2f2f2;
+  background-color: var(--color-base);
+  color: var(--color-primary-text);
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 1.5s cubic-bezier(0.16, 1, 0.3, 1), color 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Ambient Multi-Layered Emotional Atmosphere */
+.ambient-mood-backdrop {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: var(--mood-gradient);
+  transition: background 1200ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1200ms ease;
+}
+
+/* Subtle Spatial Vignette */
+.ambient-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(4, 4, 5, 0.7) 100%);
+}
+
+/* Glass Material System */
+.glass-nav {
+  background: rgba(12, 12, 14, 0.45);
+  backdrop-filter: blur(24px) saturate(120%);
+  -webkit-backdrop-filter: blur(24px) saturate(120%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: all 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.018);
+  backdrop-filter: blur(18px) saturate(110%);
+  -webkit-backdrop-filter: blur(18px) saturate(110%);
+  border: 1px solid rgba(255, 255, 255, 0.035);
+  transition: all 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glass-panel:hover {
+  background: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.glass-player {
+  background: rgba(10, 10, 12, 0.75);
+  backdrop-filter: blur(28px) saturate(125%);
+  -webkit-backdrop-filter: blur(28px) saturate(125%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+  transition: all 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Typography Overrides */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
 }
 
 /* Subtle Film Grain Layer */
 .film-grain {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+  position: relative;
+}
+.film-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
 }
 
-/* Editorial Monochrome Text Gradient */
-.text-gradient {
-  background: linear-gradient(180deg, #FFFFFF 0%, #D8D8D8 50%, #777777 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Subtle Monochrome Scanline effect for webcam analysis */
+/* Subtle Monochrome Scanline effect */
 .scanline {
   background: linear-gradient(
     to bottom,
     rgba(255,255,255,0),
-    rgba(255,255,255,0.05) 50%,
+    rgba(255,255,255,0.03) 50%,
     rgba(255,255,255,0)
   );
-  background-size: 100% 6px;
+  background-size: 100% 4px;
 }
 
 @keyframes scanlineAnim {
@@ -46,7 +133,31 @@ body {
 }
 
 .animate-scanline {
-  animation: scanlineAnim 3.5s linear infinite;
+  animation: scanlineAnim 4s linear infinite;
+}
+
+/* Cinematic Animations */
+@keyframes blurReveal {
+  0% {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
 }
 
 /* Custom Minimal Scrollbar */
@@ -55,15 +166,15 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: var(--color-base);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #242424;
+  background: var(--color-accent-dark);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #444444;
+  background: var(--color-muted-text);
 }
 
 /* Reduced Motion Safety Override */

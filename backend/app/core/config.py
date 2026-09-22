@@ -19,9 +19,13 @@ class Settings(BaseSettings):
     EMOTION_LABELS_PATH: str = "app/models/emotion/emotion_labels.json"
     HAAR_CASCADE_PATH: str = "app/models/haarcascade_frontalface_default.xml"
 
-    MUSIC_PROVIDER: str = "jamendo"  # jamendo | itunes
-    JAMENDO_CLIENT_ID: str = ""
     ITUNES_ENABLED: bool = True
+    ITUNES_COUNTRY: str = "US"
+    ITUNES_LIMIT: int = 50
+    CONTENT_CACHE_MINUTES: int = 30
+    
+    GROQ_API_KEY: str = ""
+    GROQ_MODEL: str = "llama-3.3-70b-versatile"
 
     model_config = SettingsConfigDict(
         env_file=".env",

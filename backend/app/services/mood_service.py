@@ -75,3 +75,12 @@ class MoodService:
             tempo=tempo,
             weighted_genres=weighted_genres
         )
+
+    @classmethod
+    def get_mood_for_emotion(cls, dominant_emotion: str = "neutral") -> EmotionalProfile:
+        emotion = (dominant_emotion.lower() if dominant_emotion else "neutral").strip()
+        if emotion not in cls.MOOD_MAPPINGS:
+            emotion = "neutral"
+        probabilities = {e: (100.0 if e == emotion else 0.0) for e in cls.MOOD_MAPPINGS.keys()}
+        return cls.calculate_emotional_profile(dominant_emotion=emotion, probabilities=probabilities)
+

@@ -1,62 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 
-const ANALYSIS_STEPS = [
-  "ANALYZING",
-  "FACE DETECTED",
-  "READING EXPRESSION",
-  "MOOD IDENTIFIED",
-  "BUILDING SOUNDTRACK"
+const STEPS = [
+  "Reading expression",
+  "Building emotional profile",
+  "Finding the right musical direction",
+  "Searching real music",
+  "Curating your five"
 ];
 
 export default function AnalysisSequence({ isAnalyzing }) {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [displayedText, setDisplayedText] = useState("");
-  const [charIndex, setCharIndex] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
     if (!isAnalyzing) {
-      setCurrentStepIndex(0);
-      setDisplayedText("");
-      setCharIndex(0);
+      setCurrentStep(0);
       return;
     }
 
-    const currentTarget = ANALYSIS_STEPS[currentStepIndex];
+    const interval = setInterval(() => {
+      setCurrentStep(prev => {
+        if (prev < STEPS.length - 1) return prev + 1;
+        return prev; // hold at last step
+      });
+    }, 1200);
 
-    if (charIndex < currentTarget.length) {
-      const timeout = setTimeout(() => {
-        setDisplayedText(prev => prev + currentTarget[charIndex]);
-        setCharIndex(prev => prev + 1);
-      }, 30);
-      return () => clearTimeout(timeout);
-    } else {
-      const holdTimeout = setTimeout(() => {
-        if (currentStepIndex < ANALYSIS_STEPS.length - 1) {
-          setCurrentStepIndex(prev => prev + 1);
-          setDisplayedText("");
-          setCharIndex(0);
-        }
-      }, 650);
-      return () => clearTimeout(holdTimeout);
-    }
-  }, [isAnalyzing, currentStepIndex, charIndex]);
+    return () => clearInterval(interval);
+  }, [isAnalyzing]);
 
   if (!isAnalyzing) return null;
 
   return (
-    <div className="my-10 text-center">
-      <AnimatePresence mode="wait">
-        <motion.p
-          key={displayedText}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="font-mono text-xs tracking-[0.25em] text-neutral-300 uppercase"
-        >
-          {displayedText}<span className="animate-pulse">▌</span>
-        </motion.p>
-      </AnimatePresence>
+    <div className="w-full max-w-md mx-auto my-16 animate-fade-in-slow">
+      <div className="flex flex-col gap-4 font-mono text-xs tracking-[0.2em] uppercase text-neutral-600">
+        {STEPS.map((step, idx) => (
+          <div 
+            key={idx}
+            className={`flex items-center gap-4 transition-all duration-700 ${
+              idx === currentStep ? 'text-white' : idx < currentStep ? 'text-neutral-500' : 'text-neutral-800'
+            }`}
+          >
+            <span className="w-6 text-right">0{idx + 1}</span>
+            <span className="w-2 h-2 rounded-full border border-current" style={{ backgroundColor: idx <= currentStep ? 'currentColor' : 'transparent' }}></span>
+            <span>{step}</span>
+            {idx === currentStep && <span className="animate-pulse">▌</span>}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
